@@ -93,16 +93,16 @@
 
 
 
-<meta name="description" content="安装django：  pip install django  一、建立项目(以学习笔记项目为例)进入项目的空文件夹后执行：  (project)$ django-admin.py startproject project_name .  一定不能忽略结尾的“.”，否则部署应用程序时将遇到一些配置问题。此时使用ls可以看到project文件夹中，生成了project_name文件夹，和manage.">
+<meta name="description" content="安装django：  pip install django  建立项目(以学习笔记项目为例)进入项目的空文件夹后执行：  (project)$ django-admin.py startproject project_name .  一定不能忽略结尾的“.”，否则部署应用程序时将遇到一些配置问题。此时使用ls可以看到project文件夹中，生成了project_name文件夹，和manage.py">
 <meta property="og:type" content="article">
 <meta property="og:title" content="django入门">
 <meta property="og:url" content="http://yoursite.com/2017/11/24/django入门/index.html">
 <meta property="og:site_name" content="blank space">
-<meta property="og:description" content="安装django：  pip install django  一、建立项目(以学习笔记项目为例)进入项目的空文件夹后执行：  (project)$ django-admin.py startproject project_name .  一定不能忽略结尾的“.”，否则部署应用程序时将遇到一些配置问题。此时使用ls可以看到project文件夹中，生成了project_name文件夹，和manage.">
-<meta property="og:updated_time" content="2017-11-27T04:15:25.814Z">
+<meta property="og:description" content="安装django：  pip install django  建立项目(以学习笔记项目为例)进入项目的空文件夹后执行：  (project)$ django-admin.py startproject project_name .  一定不能忽略结尾的“.”，否则部署应用程序时将遇到一些配置问题。此时使用ls可以看到project文件夹中，生成了project_name文件夹，和manage.py">
+<meta property="og:updated_time" content="2017-11-27T04:21:40.230Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="django入门">
-<meta name="twitter:description" content="安装django：  pip install django  一、建立项目(以学习笔记项目为例)进入项目的空文件夹后执行：  (project)$ django-admin.py startproject project_name .  一定不能忽略结尾的“.”，否则部署应用程序时将遇到一些配置问题。此时使用ls可以看到project文件夹中，生成了project_name文件夹，和manage.">
+<meta name="twitter:description" content="安装django：  pip install django  建立项目(以学习笔记项目为例)进入项目的空文件夹后执行：  (project)$ django-admin.py startproject project_name .  一定不能忽略结尾的“.”，否则部署应用程序时将遇到一些配置问题。此时使用ls可以看到project文件夹中，生成了project_name文件夹，和manage.py">
 
 
 
@@ -316,9 +316,9 @@
 <blockquote>
 <p>pip install django</p>
 </blockquote>
-<h1 id="一、建立项目"><a href="#一、建立项目" class="headerlink" title="一、建立项目"></a>一、建立项目</h1><p>(以学习笔记项目为例)<br>进入项目的空文件夹后执行：</p>
+<h1 id="建立项目"><a href="#建立项目" class="headerlink" title="建立项目"></a>建立项目</h1><p>(以学习笔记项目为例)<br>进入项目的空文件夹后执行：</p>
 <blockquote>
-<p>(project)$ django-admin.py startproject project_name .</p>
+<p>(project)$ <b>django-admin.py startproject project_name .</b></p>
 </blockquote>
 <p>一定不能忽略结尾的“.”，否则部署应用程序时将遇到一些配置问题。<br>此时使用ls可以看到project文件夹中，生成了project_name文件夹，和manage.py这两个文件。再看project_name中，共有settings.py,<em>init</em>.py,wsgi.py,urls.py四个文件。</p>
 <p>创建数据库：</p>
@@ -331,7 +331,7 @@
 <p>(project)$ python manage.py sunserver</p>
 </blockquote>
 <p>根据提示打开localhost：8000看到成功生成的网页即可。端口被占用时，在runserver后加上要使用的端口号，则用该端口号运行程序。</p>
-<h1 id="二、创建应用程序"><a href="#二、创建应用程序" class="headerlink" title="二、创建应用程序"></a>二、创建应用程序</h1><p>首先执行：</p>
+<h1 id="创建应用程序"><a href="#创建应用程序" class="headerlink" title="创建应用程序"></a>创建应用程序</h1><p>首先执行：</p>
 <blockquote>
 <p>(project)$ python manage.py startapp app_name</p>
 </blockquote>
@@ -361,7 +361,7 @@
 </blockquote>
 <p>接下来按照提示输入用户名、邮箱和密码,会提示创建成功。<br>向管理网站注册模型：<br>在admin.py中加入如下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">#导入models.py中创建的模型</div><div class="line">from app_name.models import Topic</div><div class="line"></div><div class="line">admin.site.register(Topic)</div></pre></td></tr></table></figure></p>
 <p>确保终端中运行着Django服务器，打开localhost:8000/admin/，并输入刚刚创建的superuser的账号密码，打开管理页面，可以添加用户和用户组，还可以管理刚刚添加的模型Topic相关的数据<br>添加主题:<br>单击Topic后点击Add添加主题。</p>
-<p>定义模型Entry：<br>还是在models.py中定义，加入如下代码；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">class Entry(models.Model):</div><div class="line">    topic = models.ForeignKey(Topic)</div><div class="line">    text = models.TextField()</div><div class="line">    data_added = models.DateTimeField(auto_now_add=True)</div><div class="line">    </div><div class="line">    class Meta:</div><div class="line">        verbose_name_plural = &apos;entries&apos;</div><div class="line">        </div><div class="line">    def __str__(self):</div><div class="line">        return self.text[:50]+&apos;...&apos;</div></pre></td></tr></table></figure></p>
+<p>定义模型Entry：<br>还是在models.py中定义，加入如下代码；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">class Entry(models.Model):</div><div class="line">    topic = models.ForeignKey(Topic)</div><div class="line">    text = models.TextField()</div><div class="line">    data_added = models.DateTimeField(auto_now_add=True)</div><div class="line">    </div><div class="line">    class Meta:</div><div class="line">        verbose_name_plural = &apos;entries&apos;</div><div class="line">        </div><div class="line">    def __str__(self):</div><div class="line">        return self.text[:50]+&apos;...&apos;</div></pre></td></tr></table></figure></p>
 <p>topic是外键的实例，将每个条目与主题关联起来。<br>接下来与创建Topic模型时一样，进行迁移模型和向管理网站注册。</p>
 <p>在管理网站中添加一些entry的数据，打开Django shell</p>
 <blockquote>
@@ -524,7 +524,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、建立项目"><span class="nav-number">1.</span> <span class="nav-text">一、建立项目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、创建应用程序"><span class="nav-number">2.</span> <span class="nav-text">二、创建应用程序</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#建立项目"><span class="nav-number">1.</span> <span class="nav-text">建立项目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建应用程序"><span class="nav-number">2.</span> <span class="nav-text">创建应用程序</span></a></li></ol></div>
             
 
           </div>
