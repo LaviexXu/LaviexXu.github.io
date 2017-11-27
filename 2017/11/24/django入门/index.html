@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="安装django：  pip install django  一、建立项目(以学习笔记项目为例)进入项目的空文件夹后执行：  (project)$ django-admin.py startproject project_name .  一定不能忽略结尾的“.”，否则部署应用程序时将遇到一些配置问题。此时使用ls可以看到project文件夹中，生成了project_name文件夹，和manage.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="django入门">
+<meta property="og:url" content="http://yoursite.com/2017/11/24/django入门/index.html">
+<meta property="og:site_name" content="blank space">
+<meta property="og:description" content="安装django：  pip install django  一、建立项目(以学习笔记项目为例)进入项目的空文件夹后执行：  (project)$ django-admin.py startproject project_name .  一定不能忽略结尾的“.”，否则部署应用程序时将遇到一些配置问题。此时使用ls可以看到project文件夹中，生成了project_name文件夹，和manage.">
+<meta property="og:updated_time" content="2017-11-27T04:15:25.814Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="django入门">
+<meta name="twitter:description" content="安装django：  pip install django  一、建立项目(以学习笔记项目为例)进入项目的空文件夹后执行：  (project)$ django-admin.py startproject project_name .  一定不能忽略结尾的“.”，否则部署应用程序时将遇到一些配置问题。此时使用ls可以看到project文件夹中，生成了project_name文件夹，和manage.">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/11/24/django入门/"/>
+
+
+
+
+
+  <title>django入门 | blank space</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">blank space</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/24/django入门/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LavieXu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blank space">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">django入门</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-24T10:41:09+08:00">
+                2017-11-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>安装django：</p>
+<blockquote>
+<p>pip install django</p>
+</blockquote>
+<h1 id="一、建立项目"><a href="#一、建立项目" class="headerlink" title="一、建立项目"></a>一、建立项目</h1><p>(以学习笔记项目为例)<br>进入项目的空文件夹后执行：</p>
+<blockquote>
+<p>(project)$ django-admin.py startproject project_name .</p>
+</blockquote>
+<p>一定不能忽略结尾的“.”，否则部署应用程序时将遇到一些配置问题。<br>此时使用ls可以看到project文件夹中，生成了project_name文件夹，和manage.py这两个文件。再看project_name中，共有settings.py,<em>init</em>.py,wsgi.py,urls.py四个文件。</p>
+<p>创建数据库：</p>
+<blockquote>
+<p>(project)$ python manage.py migrate</p>
+</blockquote>
+<p>首次执行migrate时，将让Django确保数据库与项目的当前状态匹配，此时文件夹中生成了db.sqlite3这个新文件。</p>
+<p>查看项目：</p>
+<blockquote>
+<p>(project)$ python manage.py sunserver</p>
+</blockquote>
+<p>根据提示打开localhost：8000看到成功生成的网页即可。端口被占用时，在runserver后加上要使用的端口号，则用该端口号运行程序。</p>
+<h1 id="二、创建应用程序"><a href="#二、创建应用程序" class="headerlink" title="二、创建应用程序"></a>二、创建应用程序</h1><p>首先执行：</p>
+<blockquote>
+<p>(project)$ python manage.py startapp app_name</p>
+</blockquote>
+<p>执行完之后，project目录下会生成app_name文件夹，该文件夹中包含六个文件：admin.py,<em>init</em>.py,migrations文件夹,models.py,test.py,views.py。其中最重要的是models.py,admin.py和views.py。</p>
+<p>定义模型Topic：<br>打开models.py,创建一个继承Django中Model的类。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">from django.db import models</div><div class="line"></div><div class="line"></div><div class="line"># Create your models here</div><div class="line">class Topic(models.Model):</div><div class="line">    text = models.CharField(max_length=200)</div><div class="line">    date_added = models.DateTimeField(auto_now_add=True)</div><div class="line"></div><div class="line">    def _str_(self):</div><div class="line">        return self.text</div></pre></td></tr></table></figure></p>
+<p>激活模型：<br>打开project_name中的settings.py，找到INSTALLED_APP,将刚刚创建的自己的app添加进去<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">INSTALLED_APPS = [</div><div class="line">    &apos;django.contrib.admin&apos;,</div><div class="line">    &apos;django.contrib.auth&apos;,</div><div class="line">    &apos;django.contrib.contenttypes&apos;,</div><div class="line">    &apos;django.contrib.sessions&apos;,</div><div class="line">    &apos;django.contrib.messages&apos;,</div><div class="line">    &apos;django.contrib.staticfiles&apos;,</div><div class="line">    #my apps</div><div class="line">    &apos;app_name&apos;,</div><div class="line">]</div></pre></td></tr></table></figure></p>
+<p>接下来修改数据库：</p>
+<blockquote>
+<p>(project)$ python manage.py makemigrations app_name</p>
+</blockquote>
+<p>会得到提示：</p>
+<blockquote>
+<p>Migrations for ‘app_name’:<br>app_name\migrations\0001_initial.py</p>
+<ul>
+<li>Create model Topic</li>
+</ul>
+</blockquote>
+<p>表明django创建了一个名为0001_initial.py的迁移文件，这个文件会在数据库中为模型(刚刚在models.py中创建的)创建一个表。<br>应用迁移，使django可以修改数据库：</p>
+<blockquote>
+<p>python manage.py migrate</p>
+</blockquote>
+<p>执行结果为OK即可。<br>当需要修改应用管理的数据时，都采取如下三个步骤：在models.py修改模型，调用makemigration，让Django迁移项目。</p>
+<p>管理网站：</p>
+<p>创建超级用户</p>
+<blockquote>
+<p>(project)$ python manage.py createsuperuser</p>
+</blockquote>
+<p>接下来按照提示输入用户名、邮箱和密码,会提示创建成功。<br>向管理网站注册模型：<br>在admin.py中加入如下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">#导入models.py中创建的模型</div><div class="line">from app_name.models import Topic</div><div class="line"></div><div class="line">admin.site.register(Topic)</div></pre></td></tr></table></figure></p>
+<p>确保终端中运行着Django服务器，打开localhost:8000/admin/，并输入刚刚创建的superuser的账号密码，打开管理页面，可以添加用户和用户组，还可以管理刚刚添加的模型Topic相关的数据<br>添加主题:<br>单击Topic后点击Add添加主题。</p>
+<p>定义模型Entry：<br>还是在models.py中定义，加入如下代码；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">class Entry(models.Model):</div><div class="line">    topic = models.ForeignKey(Topic)</div><div class="line">    text = models.TextField()</div><div class="line">    data_added = models.DateTimeField(auto_now_add=True)</div><div class="line">    </div><div class="line">    class Meta:</div><div class="line">        verbose_name_plural = &apos;entries&apos;</div><div class="line">        </div><div class="line">    def __str__(self):</div><div class="line">        return self.text[:50]+&apos;...&apos;</div></pre></td></tr></table></figure></p>
+<p>topic是外键的实例，将每个条目与主题关联起来。<br>接下来与创建Topic模型时一样，进行迁移模型和向管理网站注册。</p>
+<p>在管理网站中添加一些entry的数据，打开Django shell</p>
+<blockquote>
+<p>(project)$ python manage.py shell</p>
+</blockquote>
+<p>用于查看数据，方便debug。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/20/Norwegian-wood/" rel="next" title="永生">
+                <i class="fa fa-chevron-left"></i> 永生
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <p class="site-author-name" itemprop="name">LavieXu</p>
+            <p class="site-description motion-element" itemprop="description">please don't tell anyone else</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">Tags</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、建立项目"><span class="nav-number">1.</span> <span class="nav-text">一、建立项目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、创建应用程序"><span class="nav-number">2.</span> <span class="nav-text">二、创建应用程序</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LavieXu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a></div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
