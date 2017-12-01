@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="最近有个叫《寻梦环游记》的电影上映，刚好看到松鼠会的一段话觉得很温暖，矫情一下。  如果每个人都是一颗小星球，逝去的亲友就是身边的暗物质。我愿能再见你，我知我再见不到你。但你的引力仍在。我感激我们的光锥曾彼此重叠，而你永远改变了我的星轨。纵使再不能相见，你仍是我所在的星系未曾分崩离析的原因，是我宇宙之网的永恒组成。   创建用户账户创建名为users的程序，并在项目文件夹中的settings.py">
+<meta property="og:type" content="article">
+<meta property="og:title" content="django入门之用户账户">
+<meta property="og:url" content="http://yoursite.com/2017/11/28/django入门之二/index.html">
+<meta property="og:site_name" content="blank space">
+<meta property="og:description" content="最近有个叫《寻梦环游记》的电影上映，刚好看到松鼠会的一段话觉得很温暖，矫情一下。  如果每个人都是一颗小星球，逝去的亲友就是身边的暗物质。我愿能再见你，我知我再见不到你。但你的引力仍在。我感激我们的光锥曾彼此重叠，而你永远改变了我的星轨。纵使再不能相见，你仍是我所在的星系未曾分崩离析的原因，是我宇宙之网的永恒组成。   创建用户账户创建名为users的程序，并在项目文件夹中的settings.py">
+<meta property="og:updated_time" content="2017-12-01T05:48:36.072Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="django入门之用户账户">
+<meta name="twitter:description" content="最近有个叫《寻梦环游记》的电影上映，刚好看到松鼠会的一段话觉得很温暖，矫情一下。  如果每个人都是一颗小星球，逝去的亲友就是身边的暗物质。我愿能再见你，我知我再见不到你。但你的引力仍在。我感激我们的光锥曾彼此重叠，而你永远改变了我的星轨。纵使再不能相见，你仍是我所在的星系未曾分崩离析的原因，是我宇宙之网的永恒组成。   创建用户账户创建名为users的程序，并在项目文件夹中的settings.py">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/11/28/django入门之二/"/>
+
+
+
+
+
+  <title>django入门之用户账户 | blank space</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">blank space</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/28/django入门之二/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LavieXu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blank space">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">django入门之用户账户</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-28T20:20:55+08:00">
+                2017-11-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近有个叫《寻梦环游记》的电影上映，刚好看到松鼠会的一段话觉得很温暖，矫情一下。</p>
+<blockquote>
+<p>如果每个人都是一颗小星球，逝去的亲友就是身边的暗物质。我愿能再见你，我知我再见不到你。但你的引力仍在。我感激我们的光锥曾彼此重叠，而你永远改变了我的星轨。纵使再不能相见，你仍是我所在的星系未曾分崩离析的原因，是我宇宙之网的永恒组成。</p>
+</blockquote>
+<p><hr></p>
+<h1 id="创建用户账户"><a href="#创建用户账户" class="headerlink" title="创建用户账户"></a>创建用户账户</h1><p>创建名为users的程序，并在项目文件夹中的settings.py中添加上该应用，在urls.py中添加url。<b>在urls.py中添加url时，一般会调用include方法，此时url模式不再是由^$确定字符串的起始和结束，只需要开头的^不需要结束的$，否则会报错。</b></p>
+<p>如果没有特别说明，下文中除了base.html位于learning_logs/templates/learning_logs/，其他文件均在user文件夹或其子文件夹下。</p>
+<h2 id="登录"><a href="#登录" class="headerlink" title="登录"></a>登录</h2><h2 id="url-py"><a href="#url-py" class="headerlink" title="url.py"></a>url.py</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">from django.conf.urls import url</div><div class="line">from django.contrib.auth.views import login</div><div class="line">from . import views</div><div class="line"></div><div class="line">urlpatterns = [</div><div class="line">    url(r&apos;^login/$&apos;, login, &#123;&apos;template_name&apos;: &apos;users/login.html&apos;&#125;, name=&apos;login&apos;),</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>因为使用的是Django的默认视图函数login，因此在文件最上方先导入。因为视图函数不是自己编写的，所以传递’template_name’参数提供页面地址。</p>
+<h2 id="login-html"><a href="#login-html" class="headerlink" title="login.html"></a>login.html</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&#123;%extends &quot;learning_logs/base.html&quot;%&#125;</div><div class="line">&#123;%block content%&#125;</div><div class="line">    &#123;% if form.errors %&#125;</div><div class="line">        &lt;p&gt;Your username and password didn&apos;t match.Please try again.&lt;/p&gt;</div><div class="line">    &#123;% endif %&#125;</div><div class="line">    &lt;form action=&quot;&#123;%url &apos;users:login&apos;%&#125;&quot; method=&quot;post&quot;&gt;</div><div class="line">        &#123;% csrf_token %&#125;</div><div class="line">        &#123;&#123;form.as_p&#125;&#125;</div><div class="line">        &lt;button name=&quot;submit&quot;&gt;log in&lt;/button&gt;</div><div class="line">        &lt;input type=&quot;hidden&quot; name=&quot;next&quot; value=&quot;&#123;%url &apos;learning_logs:index&apos;%&#125;&quot;/&gt;</div><div class="line">    &lt;/form&gt;</div><div class="line">&#123;%endblock content%&#125;</div></pre></td></tr></table></figure>
+<p>(明明这个文件是放在user目录下的templates文件夹中的，不知道为什么可以直接继承learning_logs中的模板，去看了根目录中的settings.py，TEMPLATES的路径是[],啊啊啊看不懂啊。等以后哪天搞懂了再回来解释一下吧。)<br>在基础模板中添加到登录页面的链接：</p>
+<h2 id="base-html"><a href="#base-html" class="headerlink" title="base.html"></a>base.html</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">-&#123;% if user.is_authenticated %&#125;</div><div class="line">   Hello,&#123;&#123;user.username&#125;&#125;.</div><div class="line">   &#123;% else %&#125;</div><div class="line">       &lt;a href=&quot;&#123;% url &apos;users:login&apos;%&#125;&quot;&gt;log in&lt;/a&gt;</div><div class="line">   &#123;% endif %&#125;</div></pre></td></tr></table></figure>
+<p>如果已登录，则显示用户名；否则显示一条登录页面的链接。</p>
+<h2 id="注销"><a href="#注销" class="headerlink" title="注销"></a>注销</h2><p>urlpattern：</p>
+<blockquote>
+<p>url(r’^logout/$’, views.logout_view, name=’logout’),</p>
+</blockquote>
+<p>视图logout_view：</p>
+<h2 id="views-py"><a href="#views-py" class="headerlink" title="views.py"></a>views.py</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">from django.http import HttpResponseRedirect</div><div class="line">from django.core.urlresolvers import reverse</div><div class="line">from django.contrib.auth import logout</div><div class="line"></div><div class="line">def logout_view(request):</div><div class="line">    logout(request)</div><div class="line">    return HttpResponseRedirect(reverse(&apos;learning_logs:index&apos;))</div></pre></td></tr></table></figure>
+<p>链接到注销视图：</p>
+<h2 id="base-html-1"><a href="#base-html-1" class="headerlink" title="base.html"></a>base.html</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Hello,&#123;&#123;user.username&#125;&#125;.</div><div class="line">   &lt;a href=&quot;&#123;% url &apos;users:logout&apos; %&#125;&quot;&gt;log out&lt;/a&gt;</div></pre></td></tr></table></figure>
+<h2 id="注册"><a href="#注册" class="headerlink" title="注册"></a>注册</h2><p>urlpattern：</p>
+<blockquote>
+<p>url(r’^register/$’, views.register, name=’register’),</p>
+</blockquote>
+<p>视图函数register():</p>
+<h2 id="views-py-1"><a href="#views-py-1" class="headerlink" title="views.py"></a>views.py</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">from django.contrib.auth import logout, login, authenticate</div><div class="line">from django.contrib.auth.forms import UserCreationForm</div><div class="line"></div><div class="line">def register(request):</div><div class="line">    if request.method != &apos;POST&apos;:</div><div class="line">        form = UserCreationForm()</div><div class="line">    else:</div><div class="line">        form = UserCreationForm(data=request.POST)</div><div class="line"></div><div class="line">        if form.is_valid():</div><div class="line">            new_user = form.save()</div><div class="line">            authenticated_user = authenticate(username=new_user.username,</div><div class="line">                                              password=request.POST[&apos;password1&apos;])</div><div class="line">            login(request, authenticated_user)</div><div class="line">            return HttpResponseRedirect(reverse(&apos;learning_logs:index&apos;))</div><div class="line">    context = &#123;&apos;form&apos;: form&#125;</div><div class="line">    return render(request, &apos;users/register.html&apos;, context)</div></pre></td></tr></table></figure>
+<h2 id="register-html"><a href="#register-html" class="headerlink" title="register.html"></a>register.html</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&#123;% extends &quot;learning_logs/base.html&quot; %&#125;</div><div class="line">&#123;% block content %&#125;</div><div class="line">    &lt;form method=&quot;post&quot; action=&quot;&#123;% url &apos;users:register %&#125;&quot;&gt;</div><div class="line">        &#123;% csrf_token %&#125;</div><div class="line">        &#123;&#123;form.as_p&#125;&#125;</div><div class="line"></div><div class="line">        &lt;button name=&quot;submit&quot;&gt;register&lt;/button&gt;</div><div class="line">        &lt;input type=&quot;hidden&quot; name=&quot;next&quot; value=&quot;&#123;% learning_logs:index %&#125;&quot; /&gt;</div><div class="line">    &lt;/form&gt;</div><div class="line">&#123;% endblock content %&#125;</div></pre></td></tr></table></figure>
+<p>(这里我没太看懂为什么需要一个隐藏的input来指出重定向的地址，明明在视图函数register()中已经做了验证信息之后重定向到主页的处理了。)</p>
+<p>添加到注册页面的链接：</p>
+<h2 id="base-html-2"><a href="#base-html-2" class="headerlink" title="base.html"></a>base.html</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;% else %&#125;</div><div class="line">        &lt;a href=&quot;&#123;% url &apos;users:register&apos; %&#125;&quot;&gt;register&lt;/a&gt;/</div><div class="line">        &lt;a href=&quot;&#123;% url &apos;users:login&apos;%&#125;&quot;&gt;log in&lt;/a&gt;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/24/django入门/" rel="next" title="django入门">
+                <i class="fa fa-chevron-left"></i> django入门
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <p class="site-author-name" itemprop="name">LavieXu</p>
+            <p class="site-description motion-element" itemprop="description">please don't tell anyone else</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">Tags</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#创建用户账户"><span class="nav-number">1.</span> <span class="nav-text">创建用户账户</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#登录"><span class="nav-number">1.1.</span> <span class="nav-text">登录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#url-py"><span class="nav-number">1.2.</span> <span class="nav-text">url.py</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#login-html"><span class="nav-number">1.3.</span> <span class="nav-text">login.html</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#base-html"><span class="nav-number">1.4.</span> <span class="nav-text">base.html</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注销"><span class="nav-number">1.5.</span> <span class="nav-text">注销</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#views-py"><span class="nav-number">1.6.</span> <span class="nav-text">views.py</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#base-html-1"><span class="nav-number">1.7.</span> <span class="nav-text">base.html</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注册"><span class="nav-number">1.8.</span> <span class="nav-text">注册</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#views-py-1"><span class="nav-number">1.9.</span> <span class="nav-text">views.py</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#register-html"><span class="nav-number">1.10.</span> <span class="nav-text">register.html</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#base-html-2"><span class="nav-number">1.11.</span> <span class="nav-text">base.html</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LavieXu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a></div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
