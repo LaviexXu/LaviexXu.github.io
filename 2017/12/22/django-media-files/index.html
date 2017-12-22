@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="题外话忙搞了了一周的课设，有点事又匆忙赶回家了，这两周可以说是非常忙碌了。回家以后又在继续学django，大库还是好用的hhh，功能全，动动手调调api就好，但是就是api太多，很多东西都要去查文档。文档里很多东西说的也不太详细，看着挺迷惑的，自己去试了才知道行不行。所以有的问题即便是以后看文档就可以了，还是想记下来，也算做个记录吧。火气很大，长了痘痘到现在还没消，等回学校立刻和小棕瓶重修旧好。最">
+<meta property="og:type" content="article">
+<meta property="og:title" content="django文件上传及访问">
+<meta property="og:url" content="http://yoursite.com/2017/12/22/django-media-files/index.html">
+<meta property="og:site_name" content="blank space">
+<meta property="og:description" content="题外话忙搞了了一周的课设，有点事又匆忙赶回家了，这两周可以说是非常忙碌了。回家以后又在继续学django，大库还是好用的hhh，功能全，动动手调调api就好，但是就是api太多，很多东西都要去查文档。文档里很多东西说的也不太详细，看着挺迷惑的，自己去试了才知道行不行。所以有的问题即便是以后看文档就可以了，还是想记下来，也算做个记录吧。火气很大，长了痘痘到现在还没消，等回学校立刻和小棕瓶重修旧好。最">
+<meta property="og:updated_time" content="2017-12-22T00:32:53.434Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="django文件上传及访问">
+<meta name="twitter:description" content="题外话忙搞了了一周的课设，有点事又匆忙赶回家了，这两周可以说是非常忙碌了。回家以后又在继续学django，大库还是好用的hhh，功能全，动动手调调api就好，但是就是api太多，很多东西都要去查文档。文档里很多东西说的也不太详细，看着挺迷惑的，自己去试了才知道行不行。所以有的问题即便是以后看文档就可以了，还是想记下来，也算做个记录吧。火气很大，长了痘痘到现在还没消，等回学校立刻和小棕瓶重修旧好。最">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/12/22/django-media-files/"/>
+
+
+
+
+
+  <title>django文件上传及访问 | blank space</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">blank space</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/22/django-media-files/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LavieXu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blank space">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">django文件上传及访问</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-22T07:50:37+08:00">
+                2017-12-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>题外话<br>忙搞了了一周的课设，有点事又匆忙赶回家了，这两周可以说是非常忙碌了。回家以后又在继续学django，大库还是好用的hhh，功能全，动动手调调api就好，但是就是api太多，很多东西都要去查文档。文档里很多东西说的也不太详细，看着挺迷惑的，自己去试了才知道行不行。所以有的问题即便是以后看文档就可以了，还是想记下来，也算做个记录吧。<br>火气很大，长了痘痘到现在还没消，等回学校立刻和小棕瓶重修旧好。最近总是被各种人气道，我只能不停地安慰自己，不与傻瓜论短长算了算了，或者是仿佛全世界都在针对我的美丽。还是投入工作感觉好一些。<br>《first step》很好听，练了一小段，但是后面有一段音很高，可能频率高的声音听多了就容易脑kuo疼吧。<br>emmmm 废话不多说了，开始正文啦。</p>
+<p><hr></p>
+<h1 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h1><h2 id="FileField"><a href="#FileField" class="headerlink" title="FileField"></a>FileField</h2><p>要上传文件，这个文件肯定是和某个model有关，比如说用户的头像，我遇到的是需要给一个task上传相关的描述文件和数据文件。首先在model中定义一个文件域，也就是FileField。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">class Task(models.Model):</div><div class="line">	task_name = models.CharField(max_length=200)</div><div class="line">	overview = models.FileField(upload_to=&apos;task&apos;)</div></pre></td></tr></table></figure></p>
+<p>这个model中task_name用于描述任务的名称，overview是一个文件（.md或.txt等）。FileField是一个指向文件的域，在数据库中实际存储的是它对应的文件的存储路径。<br>定义FileField需要指定upload参数，这个参数指的是文件上传到的目录的相对路径。所谓相对路径指的是相对MEDIA_ROOT。比如说MEDIA_ROOT是’/media’，upload=’task1’,文件名是’overview.md’，那么最后文件的实际位置是’/media/task1/overview.md’。<br>上面提到的MEDIA_ROOT是在项目的settings.py中设定的。具体设置格式如下:</p>
+<blockquote>
+<p>MEDIA_ROOT = os.path.join(BASE_DIR, ‘files’)</p>
+</blockquote>
+<p>BASE_DIR一般是项目的根目录，file是这个目录下的一个文件夹。此处可以自己按需求设定。</p>
+<h2 id="自定义文件保存路径"><a href="#自定义文件保存路径" class="headerlink" title="自定义文件保存路径"></a>自定义文件保存路径</h2><p>有时候会需要不同的model实例对应的文件需要保存在不同的文件夹中，因此直接在model的定义中给定一个写死的upload参数就不够灵活。参考官方文档，可变路径的写法也非常简单。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">def task_file_directory_path(instance, filename):</div><div class="line">    # file will be uploaded to MEDIA_ROOT/task_&lt;id&gt;/&lt;filename&gt;</div><div class="line">    return &apos;task_&#123;0&#125;/&#123;1&#125;&apos;.format(instance.id, filename)</div><div class="line"></div><div class="line"></div><div class="line"># Create your models here.</div><div class="line">class Task(models.Model):</div><div class="line">    task_name = models.CharField(max_length=200)</div><div class="line">    overview = models.FileField(upload_to=task_file_directory_path)</div></pre></td></tr></table></figure></p>
+<p>上面的这个task_file_directory_path就是用来定义可变路径的。注释写的也很清楚了，最后文件的路径是MEDIA_ROOT/task_id/filename.</p>
+<h2 id="MEDIA-URL"><a href="#MEDIA-URL" class="headerlink" title="MEDIA_URL"></a>MEDIA_URL</h2><p>后台访问这些文件，直接用file接口读取，但是给用户下载的时候，必须通过url。<br>具体的url可以在settings.py中指定MEDIA_URL,文件最后的url就是base_url/MEDIA_URL/relative_path.<br>比如说我指定的MEDIA_URL = ‘/media/‘，那么文件最后的url就是base_url/media/relative_path。这个base_url就是你自己的网址，在本地运行就是localhost：port。relative_path就是上面提到的，存储的时候与MEDIA_ROOT的相对路径。比如说文件存在MEDIA_ROOT/task_1/overview.md,那它的url就是base_url/MEDIA_URL/task_1/overview.md.<br>访问该url就能直接下载该文件。<br>看起来MEDIA_URL配置好了，MEDIA_ROOT也设置好了，已经能够上传了，下载也应该可以了。但是此时访问base_url/MEDIA_URL/relative_path会提示404，找不到能匹配的urlpattern。<br>官方文档里说较新版本里应该在urls.py中这样写：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">from django.conf import settings</div><div class="line">from django.conf.urls.static import static</div><div class="line"></div><div class="line">urlpatterns = [</div><div class="line">    # ... the rest of your URLconf goes here ...</div><div class="line">] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)</div></pre></td></tr></table></figure></p>
+<p>此时在本地运行的时候，可以通过url来访问文件了。<br>不过官方文档中也给了note说：</p>
+<blockquote>
+<p>This helper function works only in debug mode and only if the given prefix is local (e.g. /media/) and not a URL (e.g. <a href="http://media.example.com/" target="_blank" rel="external">http://media.example.com/</a>).</p>
+</blockquote>
+<p>也就是说只能在本地调试，而且是debug模式下，才可以通过这种方式访问后台文件。<br>部署到服务器后，是不可以通过这种方式访问的，做这种设置是出于安全考虑。因为我目前还没有到部署阶段，具体部署到服务器后要怎么访问，等请教了相关dalao再来写。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/07/interstellar/" rel="next" title="You are my Ghost">
+                <i class="fa fa-chevron-left"></i> You are my Ghost
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <p class="site-author-name" itemprop="name">LavieXu</p>
+            <p class="site-description motion-element" itemprop="description">please don't tell anyone else</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">tags</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#文件上传"><span class="nav-number">1.</span> <span class="nav-text">文件上传</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#FileField"><span class="nav-number">1.1.</span> <span class="nav-text">FileField</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义文件保存路径"><span class="nav-number">1.2.</span> <span class="nav-text">自定义文件保存路径</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MEDIA-URL"><span class="nav-number">1.3.</span> <span class="nav-text">MEDIA_URL</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LavieXu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" href="https://hexo.io">Hexo</a></div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
