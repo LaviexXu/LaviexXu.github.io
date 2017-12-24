@@ -93,16 +93,16 @@
 
 
 
-<meta name="description" content="题外话：搞了了一周的课设，有点事又匆忙赶回家了，这两周可以说是非常忙碌了。回家以后又在继续学django，大库还是好用的hhh，功能全，动动手调调api就好，但是就是api太多，很多东西都要去查文档。文档里很多东西说的也不太详细，看着挺迷惑的，自己去试了才知道行不行。所以有的问题即便是以后看文档就可以了，还是想记下来，也算做个记录吧。火气很大，长了痘痘到现在还没消，等回学校立刻和小棕瓶重修旧好。最">
+<meta name="description" content="不小心坑自己系列↓2017.12.23只要表单里带文件上传的，一定要在form标签里加“enctype=”multipart/form-data”，如下：12&amp;lt;form action=&amp;quot;xxx&amp;quot; method=&amp;quot;post&amp;quot;    enctype=&amp;quot;multipart/form-data&amp;quot;&amp;gt; 不加这个属性，表单验证一定通不过，会">
 <meta property="og:type" content="article">
 <meta property="og:title" content="django文件上传及访问">
 <meta property="og:url" content="http://yoursite.com/2017/12/22/django-media-files/index.html">
 <meta property="og:site_name" content="blank space">
-<meta property="og:description" content="题外话：搞了了一周的课设，有点事又匆忙赶回家了，这两周可以说是非常忙碌了。回家以后又在继续学django，大库还是好用的hhh，功能全，动动手调调api就好，但是就是api太多，很多东西都要去查文档。文档里很多东西说的也不太详细，看着挺迷惑的，自己去试了才知道行不行。所以有的问题即便是以后看文档就可以了，还是想记下来，也算做个记录吧。火气很大，长了痘痘到现在还没消，等回学校立刻和小棕瓶重修旧好。最">
-<meta property="og:updated_time" content="2017-12-22T00:36:49.096Z">
+<meta property="og:description" content="不小心坑自己系列↓2017.12.23只要表单里带文件上传的，一定要在form标签里加“enctype=”multipart/form-data”，如下：12&amp;lt;form action=&amp;quot;xxx&amp;quot; method=&amp;quot;post&amp;quot;    enctype=&amp;quot;multipart/form-data&amp;quot;&amp;gt; 不加这个属性，表单验证一定通不过，会">
+<meta property="og:updated_time" content="2017-12-24T02:18:14.325Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="django文件上传及访问">
-<meta name="twitter:description" content="题外话：搞了了一周的课设，有点事又匆忙赶回家了，这两周可以说是非常忙碌了。回家以后又在继续学django，大库还是好用的hhh，功能全，动动手调调api就好，但是就是api太多，很多东西都要去查文档。文档里很多东西说的也不太详细，看着挺迷惑的，自己去试了才知道行不行。所以有的问题即便是以后看文档就可以了，还是想记下来，也算做个记录吧。火气很大，长了痘痘到现在还没消，等回学校立刻和小棕瓶重修旧好。最">
+<meta name="twitter:description" content="不小心坑自己系列↓2017.12.23只要表单里带文件上传的，一定要在form标签里加“enctype=”multipart/form-data”，如下：12&amp;lt;form action=&amp;quot;xxx&amp;quot; method=&amp;quot;post&amp;quot;    enctype=&amp;quot;multipart/form-data&amp;quot;&amp;gt; 不加这个属性，表单验证一定通不过，会">
 
 
 
@@ -312,7 +312,8 @@
       
 
       
-        <p>题外话：<br>搞了了一周的课设，有点事又匆忙赶回家了，这两周可以说是非常忙碌了。回家以后又在继续学django，大库还是好用的hhh，功能全，动动手调调api就好，但是就是api太多，很多东西都要去查文档。文档里很多东西说的也不太详细，看着挺迷惑的，自己去试了才知道行不行。所以有的问题即便是以后看文档就可以了，还是想记下来，也算做个记录吧。<br>火气很大，长了痘痘到现在还没消，等回学校立刻和小棕瓶重修旧好。最近总是被各种人气到，我只能不停地安慰自己，不与傻瓜论短长算了算了，或者是仿佛全世界都在针对我的美丽。还是投入工作感觉好一些。<br>《first step》很好听，练了一小段，但是后面有一段音很高，可能频率高的声音听多了就容易脑kuo疼吧。<br>emmmm 废话不多说了，开始正文啦。</p>
+        <p>不小心坑自己系列↓<br>2017.12.23<br>只要表单里带文件上传的，一定要在form标签里加“enctype=”multipart/form-data”，如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;form action=&quot;xxx&quot; method=&quot;post&quot;</div><div class="line">    enctype=&quot;multipart/form-data&quot;&gt;</div></pre></td></tr></table></figure></p>
+<p>不加这个属性，表单验证一定通不过，会显示this field is required，但是你会发现你明明选了文件的，debug显示错误信息还是显示这一句，死活找不到问题。很可能就是这一句没加。</p>
 <p><hr></p>
 <h1 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h1><h2 id="FileField"><a href="#FileField" class="headerlink" title="FileField"></a>FileField</h2><p>要上传文件，这个文件肯定是和某个model有关，比如说用户的头像，我遇到的是需要给一个task上传相关的描述文件和数据文件。首先在model中定义一个文件域，也就是FileField。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">class Task(models.Model):</div><div class="line">	task_name = models.CharField(max_length=200)</div><div class="line">	overview = models.FileField(upload_to=&apos;task&apos;)</div></pre></td></tr></table></figure></p>
 <p>这个model中task_name用于描述任务的名称，overview是一个文件（.md或.txt等）。FileField是一个指向文件的域，在数据库中实际存储的是它对应的文件的存储路径。<br>定义FileField需要指定upload参数，这个参数指的是文件上传到的目录的相对路径。所谓相对路径指的是相对MEDIA_ROOT。比如说MEDIA_ROOT是’/media’，upload=’task1’,文件名是’overview.md’，那么最后文件的实际位置是’/media/task1/overview.md’。<br>上面提到的MEDIA_ROOT是在项目的settings.py中设定的。具体设置格式如下:</p>
@@ -328,6 +329,12 @@
 <p>This helper function works only in debug mode and only if the given prefix is local (e.g. /media/) and not a URL (e.g. <a href="http://media.example.com/" target="_blank" rel="external">http://media.example.com/</a>).</p>
 </blockquote>
 <p>也就是说只能在本地调试，而且是debug模式下，才可以通过这种方式访问后台文件。<br>部署到服务器后，是不可以通过这种方式访问的，做这种设置是出于安全考虑。因为我目前还没有到部署阶段，具体部署到服务器后要怎么访问，等请教了相关dalao再来写。</p>
+<p>看了一些资料，好像是用HttpResponse或者相关的函数比如StreaminghttpResponse，FileResponse来实现文件下载的。等用过了再来完善。</p>
+<p><hr><br>题外话：<br>搞了了一周的课设，有点事又匆忙赶回家了，这两周可以说是非常忙碌了。回家以后又在继续学django，大库还是好用的hhh，功能全，动动手调调api就好，但是就是api太多，很多东西都要去查文档。文档里很多东西说的也不太详细，看着挺迷惑的，自己去试了才知道行不行。所以有的问题即便是以后看文档就可以了，还是想记下来，也算做个记录吧。</p>
+<p>火气很大，长了痘痘到现在还没消，等回学校立刻和小棕瓶重修旧好。最近总是被各种人气到，我只能不停地安慰自己，不与傻瓜论短长算了算了，或者是仿佛全世界都在针对我的美丽。还是投入工作感觉好一些。<br>《first step》很好听，练了一小段，但是后面有一段音很高，可能频率高的声音听多了就容易脑kuo疼吧。</p>
+<p>去染了个檀棕色的头发，超喜欢这个颜色。不过就是不化妆的时候显得没气色，但是化了妆这个发色简直太好看了。</p>
+<p>看完了日剧《只有我不存在的城市》，一开始是冲着古川的颜去的，后来发现剧情也很棒。普通人男主智商不超群，即便有穿越回过去的能力，也依然不像是有主角光环的人。为了救朋友救母亲，自己却卷入到危险中。这个剧中看似最善良的老师却是内心扭曲的杀人凶手，智商惊人，犯案30多起从未露出破绽，最后还成为了议员。如果不是穿越回来的男主早已目睹过未来，根本就意识不到身边潜在的危险。不过即便是回来了，他也没有发现老师才是凶手。<br>很温暖的一部日剧，虽然是悬疑剧，但是友情、亲情都刻画得很好。日剧里好像都特别喜欢讲述一些单纯的友情。妈妈也是特别温柔善良正直。</p>
+<p>有空重温一下古川的《一吻定情》，恋爱剧只服日剧。</p>
 
       
     </div>
