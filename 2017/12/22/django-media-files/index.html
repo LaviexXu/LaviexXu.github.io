@@ -93,16 +93,16 @@
 
 
 
-<meta name="description" content="不小心坑自己系列↓2017.12.23只要表单里带文件上传的，一定要在form标签里加“enctype=”multipart/form-data”，如下：12&amp;lt;form action=&amp;quot;xxx&amp;quot; method=&amp;quot;post&amp;quot;    enctype=&amp;quot;multipart/form-data&amp;quot;&amp;gt; 不加这个属性，表单验证一定通不过，会">
+<meta name="description" content="实例与文件路径绑定问题解决方案stackoverflow上有人提这样的问题了，链接如下：https://stackoverflow.com/questions/24146619/django-user-specific-folders?rq=1这是下面踩过的坑的第二个问题的解决方案，由zjd大佬给我发的链接。我的朋友都是活搜索引擎系列。 这个链接里提供的解决方案是单独建一个用于上传文件的model">
 <meta property="og:type" content="article">
 <meta property="og:title" content="django文件上传及访问">
 <meta property="og:url" content="http://yoursite.com/2017/12/22/django-media-files/index.html">
 <meta property="og:site_name" content="blank space">
-<meta property="og:description" content="不小心坑自己系列↓2017.12.23只要表单里带文件上传的，一定要在form标签里加“enctype=”multipart/form-data”，如下：12&amp;lt;form action=&amp;quot;xxx&amp;quot; method=&amp;quot;post&amp;quot;    enctype=&amp;quot;multipart/form-data&amp;quot;&amp;gt; 不加这个属性，表单验证一定通不过，会">
-<meta property="og:updated_time" content="2017-12-24T02:18:14.325Z">
+<meta property="og:description" content="实例与文件路径绑定问题解决方案stackoverflow上有人提这样的问题了，链接如下：https://stackoverflow.com/questions/24146619/django-user-specific-folders?rq=1这是下面踩过的坑的第二个问题的解决方案，由zjd大佬给我发的链接。我的朋友都是活搜索引擎系列。 这个链接里提供的解决方案是单独建一个用于上传文件的model">
+<meta property="og:updated_time" content="2017-12-25T12:48:47.412Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="django文件上传及访问">
-<meta name="twitter:description" content="不小心坑自己系列↓2017.12.23只要表单里带文件上传的，一定要在form标签里加“enctype=”multipart/form-data”，如下：12&amp;lt;form action=&amp;quot;xxx&amp;quot; method=&amp;quot;post&amp;quot;    enctype=&amp;quot;multipart/form-data&amp;quot;&amp;gt; 不加这个属性，表单验证一定通不过，会">
+<meta name="twitter:description" content="实例与文件路径绑定问题解决方案stackoverflow上有人提这样的问题了，链接如下：https://stackoverflow.com/questions/24146619/django-user-specific-folders?rq=1这是下面踩过的坑的第二个问题的解决方案，由zjd大佬给我发的链接。我的朋友都是活搜索引擎系列。 这个链接里提供的解决方案是单独建一个用于上传文件的model">
 
 
 
@@ -312,8 +312,24 @@
       
 
       
-        <p>不小心坑自己系列↓<br>2017.12.23<br>只要表单里带文件上传的，一定要在form标签里加“enctype=”multipart/form-data”，如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;form action=&quot;xxx&quot; method=&quot;post&quot;</div><div class="line">    enctype=&quot;multipart/form-data&quot;&gt;</div></pre></td></tr></table></figure></p>
+        <h1 id="实例与文件路径绑定问题解决方案"><a href="#实例与文件路径绑定问题解决方案" class="headerlink" title="实例与文件路径绑定问题解决方案"></a>实例与文件路径绑定问题解决方案</h1><p>stackoverflow上有人提这样的问题了，链接如下：<br><a href="https://stackoverflow.com/questions/24146619/django-user-specific-folders?rq=1" target="_blank" rel="external">https://stackoverflow.com/questions/24146619/django-user-specific-folders?rq=1</a><br>这是下面踩过的坑的第二个问题的解决方案，由zjd大佬给我发的链接。我的朋友都是活搜索引擎系列。</p>
+<p>这个链接里提供的解决方案是单独建一个用于上传文件的model，把另一个model作为外键。只有当这个外键的model已经存在时，才会去创建或者调用上传文件的model，这就解决了创建model实例的时候id还没有初始化的问题。</p>
+<p>不过我个人是觉得这样挺麻烦的，我暂时还没有必须把不同model实例的文件分开存储的需求，所以就统一放在固定路径下好了。</p>
+<h1 id="踩过的坑"><a href="#踩过的坑" class="headerlink" title="踩过的坑"></a>踩过的坑</h1><p>2017.12.23</p>
+<h2 id="带文件的表单验证错误"><a href="#带文件的表单验证错误" class="headerlink" title="带文件的表单验证错误"></a>带文件的表单验证错误</h2><p>只要表单里带文件上传的，一定要在form标签里加“enctype=”multipart/form-data”，如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;form action=&quot;xxx&quot; method=&quot;post&quot;</div><div class="line">    enctype=&quot;multipart/form-data&quot;&gt;</div></pre></td></tr></table></figure></p>
 <p>不加这个属性，表单验证一定通不过，会显示this field is required，但是你会发现你明明选了文件的，debug显示错误信息还是显示这一句，死活找不到问题。很可能就是这一句没加。</p>
+<h2 id="文件路径关联实例问题"><a href="#文件路径关联实例问题" class="headerlink" title="文件路径关联实例问题"></a>文件路径关联实例问题</h2><p>官方文档中提到过，将文件保存在对应id的文件夹下，比如task的id是1，那么这个task相关的文件都保存在task_1文件夹下，具体实现方法如下（后文也有提到）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">def task_file_directory_path(instance, filename):</div><div class="line">    # file will be uploaded to MEDIA_ROOT/task_&lt;id&gt;/&lt;filename&gt;</div><div class="line">    return &apos;task_&#123;0&#125;/&#123;1&#125;&apos;.format(instance.id, filename)</div><div class="line"></div><div class="line"></div><div class="line"># Create your models here.</div><div class="line">class Task(models.Model):</div><div class="line">    task_name = models.CharField(max_length=200)</div><div class="line">    overview = models.FileField(upload_to=task_file_directory_path)</div></pre></td></tr></table></figure></p>
+<p>但是在实际使用过程中发现，这么写的话，在实例还未创建的时候是没有id的，此时id=None，文件会被保存到task_None文件夹下。<br>再回过头去读文档，在描述task_file_directory_path的参数的时候，关于instance参数，里面是这么写的：</p>
+<blockquote>
+<p>An instance of the model where the FileField is defined. More specifically, this is the particular instance where the current file is being attached.<br>In most cases, this object will not have been saved to the database yet, so if it uses the default AutoField, it might not yet have a value for its primary key field.</p>
+</blockquote>
+<p>也就是说实例还没创建的时候，primary key field还没有值，所以文件无法被关联到相关实例。<br>那么能不能指定primary key field，使文件能保存到正确的路径下呢？也是不行的，文档中特别指出：</p>
+<blockquote>
+<p>The primary_key argument isn’t supported and will raise a an error if used.</p>
+</blockquote>
+<p>不支持该参数。所以这个方法也行不通。</p>
+<p>之后又想到，既然实例未创建的时候，instance.id的值是None，那能不能加一个if instance.id is None的判断，如果是None的话，那么获取数据库中已有的Task数，再加一就是新的实例创建之后的id了。但是有一个问题，就是数据库中删除条目后，原有实例id还是保持不变的，新增实例也是在创建记录上继续自增。举个例子，假如原本有三个Task的实例，删除两个保留一个，此时再创建新的实例，id应该为4，而不是因为此时只有一个实例，所以新的实例id就为2。所以即便能通过if instance.id is None来判断该实例是否已经存在，也没法准确给出这个即将创建的实例的id。</p>
+<p>至于最后的解决办法，暂时还没想到。可能会像可变路径低头吧，直接把所有文件放在一个固定路径的文件夹中就可以了；也可能会在实例创建之后再进行一系列操作。关于这个问题请教了django大佬zjd，但是暂时还没有得到回应。等找到解决方法了再回来更。</p>
 <p><hr></p>
 <h1 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h1><h2 id="FileField"><a href="#FileField" class="headerlink" title="FileField"></a>FileField</h2><p>要上传文件，这个文件肯定是和某个model有关，比如说用户的头像，我遇到的是需要给一个task上传相关的描述文件和数据文件。首先在model中定义一个文件域，也就是FileField。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">class Task(models.Model):</div><div class="line">	task_name = models.CharField(max_length=200)</div><div class="line">	overview = models.FileField(upload_to=&apos;task&apos;)</div></pre></td></tr></table></figure></p>
 <p>这个model中task_name用于描述任务的名称，overview是一个文件（.md或.txt等）。FileField是一个指向文件的域，在数据库中实际存储的是它对应的文件的存储路径。<br>定义FileField需要指定upload参数，这个参数指的是文件上传到的目录的相对路径。所谓相对路径指的是相对MEDIA_ROOT。比如说MEDIA_ROOT是’/media’，upload=’task1’,文件名是’overview.md’，那么最后文件的实际位置是’/media/task1/overview.md’。<br>上面提到的MEDIA_ROOT是在项目的settings.py中设定的。具体设置格式如下:</p>
@@ -368,6 +384,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/04/hello2018/" rel="prev" title="move on">
+                move on <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -443,7 +463,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -491,7 +511,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#文件上传"><span class="nav-number">1.</span> <span class="nav-text">文件上传</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#FileField"><span class="nav-number">1.1.</span> <span class="nav-text">FileField</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义文件保存路径"><span class="nav-number">1.2.</span> <span class="nav-text">自定义文件保存路径</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MEDIA-URL"><span class="nav-number">1.3.</span> <span class="nav-text">MEDIA_URL</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#实例与文件路径绑定问题解决方案"><span class="nav-number">1.</span> <span class="nav-text">实例与文件路径绑定问题解决方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#踩过的坑"><span class="nav-number">2.</span> <span class="nav-text">踩过的坑</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#带文件的表单验证错误"><span class="nav-number">2.1.</span> <span class="nav-text">带文件的表单验证错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件路径关联实例问题"><span class="nav-number">2.2.</span> <span class="nav-text">文件路径关联实例问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文件上传"><span class="nav-number">3.</span> <span class="nav-text">文件上传</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#FileField"><span class="nav-number">3.1.</span> <span class="nav-text">FileField</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义文件保存路径"><span class="nav-number">3.2.</span> <span class="nav-text">自定义文件保存路径</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MEDIA-URL"><span class="nav-number">3.3.</span> <span class="nav-text">MEDIA_URL</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -514,7 +534,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
