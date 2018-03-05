@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="折腾n久终于部署到服务器啦，毕设终于差不多只剩下论文、翻译、开题报告这些东西了。还是我鸭专门从北京跑来实验室帮我部署的，不然我大概就凉了吧。多功能男朋友，可以说是肥肠喜欢了。我鸭变了，都不用vim了，偷偷去学一下emacs省的以后又被嘲笑。东学和西学超市里现在都有好多蛋糕类的零食，看的我馋的要命。前两天在仟吉看到了草莓盒子特地等着男票过来一起吃，超好吃。可惜东学超市的豆乳盒子、芒果班戟只能自己去吃">
+<meta property="og:type" content="article">
+<meta property="og:title" content="django+gunicorn+nginx部署服务器">
+<meta property="og:url" content="http://yoursite.com/2018/03/04/deploy-django-project/index.html">
+<meta property="og:site_name" content="blank space">
+<meta property="og:description" content="折腾n久终于部署到服务器啦，毕设终于差不多只剩下论文、翻译、开题报告这些东西了。还是我鸭专门从北京跑来实验室帮我部署的，不然我大概就凉了吧。多功能男朋友，可以说是肥肠喜欢了。我鸭变了，都不用vim了，偷偷去学一下emacs省的以后又被嘲笑。东学和西学超市里现在都有好多蛋糕类的零食，看的我馋的要命。前两天在仟吉看到了草莓盒子特地等着男票过来一起吃，超好吃。可惜东学超市的豆乳盒子、芒果班戟只能自己去吃">
+<meta property="og:updated_time" content="2018-03-05T03:03:27.178Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="django+gunicorn+nginx部署服务器">
+<meta name="twitter:description" content="折腾n久终于部署到服务器啦，毕设终于差不多只剩下论文、翻译、开题报告这些东西了。还是我鸭专门从北京跑来实验室帮我部署的，不然我大概就凉了吧。多功能男朋友，可以说是肥肠喜欢了。我鸭变了，都不用vim了，偷偷去学一下emacs省的以后又被嘲笑。东学和西学超市里现在都有好多蛋糕类的零食，看的我馋的要命。前两天在仟吉看到了草莓盒子特地等着男票过来一起吃，超好吃。可惜东学超市的豆乳盒子、芒果班戟只能自己去吃">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/04/deploy-django-project/"/>
+
+
+
+
+
+  <title>django+gunicorn+nginx部署服务器 | blank space</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">blank space</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/04/deploy-django-project/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LavieXu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blank space">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">django+gunicorn+nginx部署服务器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-04T18:13:08+08:00">
+                2018-03-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>折腾n久终于部署到服务器啦，毕设终于差不多只剩下论文、翻译、开题报告这些东西了。还是我鸭专门从北京跑来实验室帮我部署的，不然我大概就凉了吧。多功能男朋友，可以说是肥肠喜欢了。我鸭变了，都不用vim了，偷偷去学一下emacs省的以后又被嘲笑。东学和西学超市里现在都有好多蛋糕类的零食，看的我馋的要命。前两天在仟吉看到了草莓盒子特地等着男票过来一起吃，超好吃。可惜东学超市的豆乳盒子、芒果班戟只能自己去吃啦。<br>记录一下部署过程，万一以后重装系统或者格式化了，那就可以哭去了。一堆坑都是男票踩的，不然我大概是搞不定的吧。</p>
+<h1 id="虚拟环境"><a href="#虚拟环境" class="headerlink" title="虚拟环境"></a>虚拟环境</h1><blockquote>
+<p>sudo apt-get install python-virtualenv<br>sudo virtualenv ~/CourseDesignPlatform<br>source ~/CourseDesignPlatform/bin/activate.fish</p>
+</blockquote>
+<p>执行完之后，~/CourseDesignPlatform的虚拟环境已经激活，此时查看python版本，已经是python3.6了（外部环境是python2.7）</p>
+<h1 id="安装django及相关python模块"><a href="#安装django及相关python模块" class="headerlink" title="安装django及相关python模块"></a>安装django及相关python模块</h1><blockquote>
+<p>pip install django==1.11.7<br>pip install jieba,pdfminer.six,django-bootstrap3(该项目需要的包)<br>pip install gunicorn(gunicorn服务器)<br>pip install psycopg2(postgresql的后端)</p>
+</blockquote>
+<h1 id="安装及配置PostgreSQL"><a href="#安装及配置PostgreSQL" class="headerlink" title="安装及配置PostgreSQL"></a>安装及配置PostgreSQL</h1><h2 id="postgresql部分"><a href="#postgresql部分" class="headerlink" title="postgresql部分"></a>postgresql部分</h2><p>安装：</p>
+<blockquote>
+<p>sudo apt-get install postgresql postgresql-contrib</p>
+</blockquote>
+<p>配置：<br>切换到postgres用户：</p>
+<blockquote>
+<p>sudo su postgres</p>
+</blockquote>
+<p>进入postgresql控制台：</p>
+<blockquote>
+<p>psql</p>
+</blockquote>
+<p>创建超级用户：</p>
+<blockquote>
+<p>create user xx superuser password ‘xxx’</p>
+</blockquote>
+<p>切换该到用户：</p>
+<blockquote>
+<p>\c - xx</p>
+</blockquote>
+<p>创建数据库：</p>
+<blockquote>
+<p>create database xxdb owner xx</p>
+</blockquote>
+<p>将xxdb的权限赋给用户xx</p>
+<blockquote>
+<p>grant all privileges on database xxdb to xx</p>
+</blockquote>
+<p>postgresql是需要用service命令启动的，因为安装以后就自动启动了，所以可以直接登入postgresql控制台。如果进程不在了，需要用service命令重启。</p>
+<h2 id="django配置文件部分"><a href="#django配置文件部分" class="headerlink" title="django配置文件部分"></a>django配置文件部分</h2><p>找到项目目录下，同名目录文件里的settings.py，修改为：</p>
+<pre><code>DATABASES = {
+    &apos;default&apos;: {
+        &apos;ENGINE&apos;: &apos;django.db.backends.postgresql_psycopg2&apos;, 
+        &apos;NAME&apos;: &apos;xxdb&apos;,
+        # The following settings are not used with sqlite3:
+        &apos;USER&apos;: &apos;xx&apos;,
+        &apos;PASSWORD&apos;: &apos;xxx&apos;,
+        &apos;HOST&apos;: &apos;localhost&apos;,
+        &apos;PORT&apos;: &apos;&apos;, 
+    }
+}
+</code></pre><p>设置好以后执行：</p>
+<blockquote>
+<p>python manage.py migrate</p>
+</blockquote>
+<p>如果没有报错，会提示数据库已经迁移过去了。</p>
+<h1 id="配置Gunicorn"><a href="#配置Gunicorn" class="headerlink" title="配置Gunicorn"></a>配置Gunicorn</h1><p>在虚拟环境目录下创建文件gunicorn_config.py</p>
+<pre><code> command = &apos;/home/yfxu/CourseDesignPlatform/bin/gunicorn&apos;
+pythonpath = &apos;/opt/myenv/myproject&apos;
+bind = &apos;127.0.0.1:8001&apos;
+workers = 3 # 一般建议是cpu数目*2+1，也有地方是建议和cpu数目一样
+</code></pre><p>执行一下命令启动gunicorn：</p>
+<blockquote>
+<p>/home/yfxu/CourseDesignPlatform/bin/gunicorn -c /home/yfxu/CourseDesignPlatform/gunicorn_config.py myproject.wsgi</p>
+</blockquote>
+<p>此时gunicorn启动，并运行在了前台。ctrl+Z再bg会运行到后台；用nohup保证终端关闭进程依然在运行。<br>男票怕我每次启动都要看就放到start_gunicorn脚本里了，重装系统的话就效仿一下。</p>
+<h1 id="安装及配置nginx"><a href="#安装及配置nginx" class="headerlink" title="安装及配置nginx"></a>安装及配置nginx</h1><blockquote>
+<p>sudo apt-get install nginx</p>
+</blockquote>
+<p>在django项目的settings.py里找到变量STATIC_ROOT并修改到指定的文件目录。建议是放在虚拟环境目录内，但不放在django项目内。不过好像我这个项目没有静态文件，主要是懒得写js和css哈哈哈哈。</p>
+<p>修改nginx的配置文件，目录在/etc/nginx/sites-available/myprojects</p>
+<pre><code>server {
+    server_name yourdomainorip.com;
+    access_log off;
+    location /static/ {
+        alias /opt/myenv/static/;
+    }
+    location / {
+            proxy_pass http://127.0.0.1:8001;
+            proxy_set_header X-Forwarded-Host $server_name;
+            proxy_set_header X-Real-IP $remote_addr;
+            add_header P3P &apos;CP=&quot;ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV&quot;&apos;;
+    }
+}
+</code></pre><p>具体自己修改，我们目前没有域名，就listen 80就好了。然后静态文件的路径也要改成和settings.py里统一的。<br>建立软连接：<br>先进入/ect/nginx/sites-enabled目录，</p>
+<blockquote>
+<p>sudo ln -s ../sites-available/myprojects</p>
+</blockquote>
+<p>别忘了删除默认的server bolck ，在sites-enabled目录下，sudo rm default。<br>之前就是被这个坑了，忘记删默认文件，导致怎么打开都是访问的nginx启动默认页面。<br>之后重启nginx服务：</p>
+<blockquote>
+<p>sudo service nginx restart</p>
+</blockquote>
+<h1 id="大功告成！"><a href="#大功告成！" class="headerlink" title="大功告成！"></a>大功告成！</h1><p>此时访问ip就可以打开你的网站啦。<br>然后还要一个个测试网页功能，阿西吧体力活啊。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/26/SomethingPredefined/" rel="next" title="尘埃落定">
+                <i class="fa fa-chevron-left"></i> 尘埃落定
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <p class="site-author-name" itemprop="name">LavieXu</p>
+            <p class="site-description motion-element" itemprop="description">please don't tell anyone else</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">Tags</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#虚拟环境"><span class="nav-number">1.</span> <span class="nav-text">虚拟环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装django及相关python模块"><span class="nav-number">2.</span> <span class="nav-text">安装django及相关python模块</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装及配置PostgreSQL"><span class="nav-number">3.</span> <span class="nav-text">安装及配置PostgreSQL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#postgresql部分"><span class="nav-number">3.1.</span> <span class="nav-text">postgresql部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#django配置文件部分"><span class="nav-number">3.2.</span> <span class="nav-text">django配置文件部分</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置Gunicorn"><span class="nav-number">4.</span> <span class="nav-text">配置Gunicorn</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装及配置nginx"><span class="nav-number">5.</span> <span class="nav-text">安装及配置nginx</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#大功告成！"><span class="nav-number">6.</span> <span class="nav-text">大功告成！</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LavieXu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a></div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
