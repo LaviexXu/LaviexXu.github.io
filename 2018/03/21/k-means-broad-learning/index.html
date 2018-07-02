@@ -99,7 +99,7 @@
 <meta property="og:url" content="http://yoursite.com/2018/03/21/k-means-broad-learning/index.html">
 <meta property="og:site_name" content="blank space">
 <meta property="og:description" content="可能是本咸鱼唯一一篇看起来正儿八经的学习笔记？？？有一天梦到自己做的中文笔记被实验室的兄弟们笑了，吓得我第二天过去实验室赶紧把我的小本子藏了起来。作为实验室最菜的人，压力很大的！ 宽度学习原宽度学习系统宽度学习系统是一种扁平化的神经网络。对输入X进行特征映射得到特征节点，再对特征节点再次映射得到增强节点。将这两组节点作为宽度学习系统的输入，直接连接输出层，通过求伪逆的算法得到权值矩阵。这种算法比深">
-<meta property="og:updated_time" content="2018-03-22T12:35:34.285Z">
+<meta property="og:updated_time" content="2018-03-23T02:16:06.333Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="宽度学习系统&#x2F;伪逆学习算法">
 <meta name="twitter:description" content="可能是本咸鱼唯一一篇看起来正儿八经的学习笔记？？？有一天梦到自己做的中文笔记被实验室的兄弟们笑了，吓得我第二天过去实验室赶紧把我的小本子藏了起来。作为实验室最菜的人，压力很大的！ 宽度学习原宽度学习系统宽度学习系统是一种扁平化的神经网络。对输入X进行特征映射得到特征节点，再对特征节点再次映射得到增强节点。将这两组节点作为宽度学习系统的输入，直接连接输出层，通过求伪逆的算法得到权值矩阵。这种算法比深">
@@ -198,7 +198,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Home
+            Startseite
           </a>
         </li>
       
@@ -208,7 +208,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archives
+            Archiv
           </a>
         </li>
       
@@ -272,7 +272,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-21T12:08:50+08:00">
                 2018-03-21
@@ -314,7 +314,7 @@
       
         <p>可能是本咸鱼唯一一篇看起来正儿八经的学习笔记？？？<br>有一天梦到自己做的中文笔记被实验室的兄弟们笑了，吓得我第二天过去实验室赶紧把我的小本子藏了起来。作为实验室最菜的人，压力很大的！</p>
 <h1 id="宽度学习"><a href="#宽度学习" class="headerlink" title="宽度学习"></a>宽度学习</h1><h2 id="原宽度学习系统"><a href="#原宽度学习系统" class="headerlink" title="原宽度学习系统"></a>原宽度学习系统</h2><p>宽度学习系统是一种扁平化的神经网络。对输入X进行特征映射得到特征节点，再对特征节点再次映射得到增强节点。将这两组节点作为宽度学习系统的输入，直接连接输出层，通过求伪逆的算法得到权值矩阵。<br>这种算法比深度神经网络快很多，网络结构是在宽度方向上展开的，因为用伪逆解作为权值矩阵，算是有解析解的，直接用广义线性代数中的一些运算就可以完成。在传统深度网络中，是通过增加层数来提高精度的，宽度学习只有一层，因此它是通过增加节点数来提高精度的。<br>整个宽度学习最大的亮点在于它的增量学习，无论是增加特征节点、增强节点还是增加输入数据，都有现成的数学公式可以直接迭代出新的权值矩阵。<br>对着代码看论文才又看懂了一丢丢orz。</p>
-<h1 id="基于k-means的改进"><a href="#基于k-means的改进" class="headerlink" title="基于k-means的改进"></a>基于k-means的改进</h1><p>改进流点在于特征提取，也就是不把原始数据作为输入，而以它的特征作为输入。<br>因为原BLS在cifar-10数据集上表现不够好，因此提出这种改进。</p>
+<h2 id="基于k-means的改进"><a href="#基于k-means的改进" class="headerlink" title="基于k-means的改进"></a>基于k-means的改进</h2><p>改进流点在于特征提取，也就是不把原始数据作为输入，而以它的特征作为输入。<br>因为原BLS在cifar-10数据集上表现不够好，因此提出这种改进。</p>
 <ol>
 <li>先对亮度和对比度归一化，用ZCA whitening去除相关性的影响。（预处理）</li>
 <li>对未标签的数据进行聚类，得到k个类心，以这些类心作为列向量得到矩阵D</li>
@@ -358,6 +358,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/26/graduate/" rel="prev" title="好きです">
+                好きです <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -411,10 +415,10 @@
       
         <ul class="sidebar-nav motion-element">
           <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Table of Contents
+            Inhaltsverzeichnis
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
-            Overview
+            Übersicht
           </li>
         </ul>
       
@@ -433,8 +437,8 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">17</span>
-                <span class="site-state-item-name">posts</span>
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">Artikel</span>
               </a>
             </div>
           
@@ -447,7 +451,7 @@
             <div class="site-state-item site-state-tags">
               
                 <span class="site-state-item-count">1</span>
-                <span class="site-state-item-name">tags</span>
+                <span class="site-state-item-name">Tags</span>
               
             </div>
           
@@ -481,7 +485,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#宽度学习"><span class="nav-number">1.</span> <span class="nav-text">宽度学习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#原宽度学习系统"><span class="nav-number">1.1.</span> <span class="nav-text">原宽度学习系统</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基于k-means的改进"><span class="nav-number">2.</span> <span class="nav-text">基于k-means的改进</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#伪逆学习算法"><span class="nav-number">3.</span> <span class="nav-text">伪逆学习算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#用伪逆学习算法快速构建深度神经网络"><span class="nav-number">3.1.</span> <span class="nav-text">用伪逆学习算法快速构建深度神经网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自编码器和低秩逼近"><span class="nav-number">3.2.</span> <span class="nav-text">自编码器和低秩逼近</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#宽度学习"><span class="nav-number">1.</span> <span class="nav-text">宽度学习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#原宽度学习系统"><span class="nav-number">1.1.</span> <span class="nav-text">原宽度学习系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于k-means的改进"><span class="nav-number">1.2.</span> <span class="nav-text">基于k-means的改进</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#伪逆学习算法"><span class="nav-number">2.</span> <span class="nav-text">伪逆学习算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#用伪逆学习算法快速构建深度神经网络"><span class="nav-number">2.1.</span> <span class="nav-text">用伪逆学习算法快速构建深度神经网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自编码器和低秩逼近"><span class="nav-number">2.2.</span> <span class="nav-text">自编码器和低秩逼近</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -514,7 +518,7 @@
 </div>
 
 
-  <div class="powered-by">Powered by <a class="theme-link" href="https://hexo.io">Hexo</a></div>
+  <div class="powered-by">Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a></div>
 
   <span class="post-meta-divider">|</span>
 
