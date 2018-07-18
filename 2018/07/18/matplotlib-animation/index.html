@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="真的太太太讨厌做图了。之前没用python做过图不说，网上能找到的可参考的代码更是少得可怜，官方文档里也仅仅是提供了每个参数的解释，连个像样的Demo也没有。动画又分FuncAnimation和ArtistAnimation两种，能找到的也都只有对单个函数语焉不详的讲解，要不就是丢一串代码，注释也没有，太糟心了。下面是matplotlib给出的API及其参数，详情参考https://matplot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用matplotlib绘制动图">
+<meta property="og:url" content="http://yoursite.com/2018/07/18/matplotlib-animation/index.html">
+<meta property="og:site_name" content="blank space">
+<meta property="og:description" content="真的太太太讨厌做图了。之前没用python做过图不说，网上能找到的可参考的代码更是少得可怜，官方文档里也仅仅是提供了每个参数的解释，连个像样的Demo也没有。动画又分FuncAnimation和ArtistAnimation两种，能找到的也都只有对单个函数语焉不详的讲解，要不就是丢一串代码，注释也没有，太糟心了。下面是matplotlib给出的API及其参数，详情参考https://matplot">
+<meta property="og:image" content="http://yoursite.com/2018/07/18/matplotlib-animation/D2018_01_13_S00017_I3022_P_wells_1_video.gif">
+<meta property="og:updated_time" content="2018-07-18T04:54:23.113Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用matplotlib绘制动图">
+<meta name="twitter:description" content="真的太太太讨厌做图了。之前没用python做过图不说，网上能找到的可参考的代码更是少得可怜，官方文档里也仅仅是提供了每个参数的解释，连个像样的Demo也没有。动画又分FuncAnimation和ArtistAnimation两种，能找到的也都只有对单个函数语焉不详的讲解，要不就是丢一串代码，注释也没有，太糟心了。下面是matplotlib给出的API及其参数，详情参考https://matplot">
+<meta name="twitter:image" content="http://yoursite.com/2018/07/18/matplotlib-animation/D2018_01_13_S00017_I3022_P_wells_1_video.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/07/18/matplotlib-animation/"/>
+
+
+
+
+
+  <title>用matplotlib绘制动图 | blank space</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">blank space</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/18/matplotlib-animation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LavieXu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blank space">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">用matplotlib绘制动图</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-18T11:51:53+08:00">
+                2018-07-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>真的太太太讨厌做图了。之前没用python做过图不说，网上能找到的可参考的代码更是少得可怜，官方文档里也仅仅是提供了每个参数的解释，连个像样的Demo也没有。动画又分FuncAnimation和ArtistAnimation两种，能找到的也都只有对单个函数语焉不详的讲解，要不就是丢一串代码，注释也没有，太糟心了。<br>下面是matplotlib给出的API及其参数，详情参考<a href="https://matplotlib.org/api/_as_gen/matplotlib.animation.ArtistAnimation.html?highlight=artistanimation#matplotlib.animation.ArtistAnimation" target="_blank" rel="external">https://matplotlib.org/api/_as_gen/matplotlib.animation.ArtistAnimation.html?highlight=artistanimation#matplotlib.animation.ArtistAnimation</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">class matplotlib.animation.ArtistAnimation(fig, artists, *args, **kwargs)[source]</div></pre></td></tr></table></figure></p>
+<p>ArtistAnimation的第一个参数是显示动画的窗口，一般是figure()类或其子类，第二个参数是一个列表，其中存放Artist类的子类容器对象，比如Line2D、 Rectangle、 Text、AxesImage 等等。之后的可选参数可以用来设置帧率和一些别的高级选项。</p>
+<p>以下是我参考张狗子同学的代码改完后满足我本次作图的需求的代码。先看一下效果图。<br><img src="/2018/07/18/matplotlib-animation/D2018_01_13_S00017_I3022_P_wells_1_video.gif" alt="D2018_01_13_S00017_I3022_P_wells_1_video.gif" title=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">import matplotlib.pyplot as plt</div><div class="line">import matplotlib.animation as animation</div><div class="line">import numpy as np</div><div class="line"></div><div class="line">npz_path = &quot;video.npz&quot;</div><div class="line">video_npz = np.load(npz_path) # load video and error data</div><div class="line"></div><div class="line">err_list = list(video_npz[&quot;err&quot;])</div><div class="line">gray_frames = list(video_npz[&quot;pic&quot;])</div><div class="line"></div><div class="line">del gray_frames[0]  # the first frame has no frame to compare</div><div class="line"></div><div class="line">save = True</div><div class="line">fps = 50</div><div class="line">fig, (video,err_curve) = plt.subplots(ncols=2)</div><div class="line"></div><div class="line"># set window and subplot</div><div class="line">video.get_xaxis().set_visible(False)</div><div class="line">video.get_yaxis().set_visible(False)</div><div class="line">err_curve.get_xaxis().set_visible(False)</div><div class="line">err_curve.get_yaxis().set_visible(False)</div><div class="line">video.set_title(&apos;origin video&apos;)</div><div class="line">err_curve.set_title(&apos;histogram difference&apos;)</div><div class="line"></div><div class="line"># add frames into list for ArtistAnimation to display</div><div class="line">gray_video = list()</div><div class="line">for i in range(len(gray_frames)):</div><div class="line">    cur_frame = video.imshow(gray_frames[i], cmap=&apos;gray&apos;, animated=True)</div><div class="line">    curve = err_curve.plot(err_list[0:i+1], color=&apos;blue&apos;, animated=True)</div><div class="line">    curve = curve[0]</div><div class="line">    gray_video.append([cur_frame, curve])</div><div class="line"></div><div class="line">anim = animation.ArtistAnimation(fig, gray_video,interval=int(1000/fps), blit=True)</div><div class="line"></div><div class="line"># save animation</div><div class="line">if save:</div><div class="line">    anim.save(npz_path.split(&quot;.&quot;)[0]+&quot;.gif&quot;, writer=&quot;imagemagick&quot;, fps=fps)</div><div class="line"></div><div class="line">plt.show()</div></pre></td></tr></table></figure>
+<p>整段代码去掉空格和import也就二十多行。不过为了方便清晰地看到每一段的作用，还是分开来解释一下。</p>
+<p>最开始三行import进制作动图需要的最基础的三个包，其中引入numpy是为了读取我存储数据的npz文件的，可以选择性引入。</p>
+<p>之后是读取用于作图数据。我的诉求是在左边播放视频，右边显示当前帧与上一帧的灰度直方图之差的绝对值之和曲线。视频中的每一帧和直方图之差都存在npz文件中了，用np.load(file)就可以读出来了。另外因为我是每一帧与上一帧计算差值的，所以第一帧是没有上一帧可比较的，因此我直接删除了第一帧的画面。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">npz_path = &quot;video.npz&quot;</div><div class="line">video_npz = np.load(npz_path)</div><div class="line"></div><div class="line">err_list = list(video_npz[&quot;err&quot;])</div><div class="line">gray_frames = list(video_npz[&quot;pic&quot;])</div><div class="line"></div><div class="line">del gray_frames[0]</div></pre></td></tr></table></figure></p>
+<p>接下来对要画的图做基本设置。save用于提示绘制出的动图是否要存储。fps指示帧率。fig是用于显示动画的窗口，video和err_curve分别是该窗口中的两个子图，对应左边播放视频，右边绘制曲线。<br>两个子图都不需要坐标轴，因此设置了隐藏坐标轴。另外用set_title()给两个子图添加图名。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">save = True</div><div class="line">fps = 50</div><div class="line">fig, (video,err_curve) = plt.subplots(ncols=2)</div><div class="line"></div><div class="line">video.get_xaxis().set_visible(False)</div><div class="line">video.get_yaxis().set_visible(False)</div><div class="line">err_curve.get_xaxis().set_visible(False)</div><div class="line">err_curve.get_yaxis().set_visible(False)</div><div class="line">video.set_title(&apos;origin video&apos;)</div><div class="line">err_curve.set_title(&apos;histogram difference&apos;)</div></pre></td></tr></table></figure></p>
+<p>前期工作基本都做好了，数据已经载入内存，动画窗口也准备好了，下面就是告诉绘制动画的API每一帧要放什么内容了。刚刚提到，matplotlib里支持动画的API有FuncAnimation和ArtistAnimation两种。第一种主要用于曲线的绘制，网上大多数demo都是在用FuncAnimation绘制正弦曲线、随机数点等等；第二种主要用于绘制图片等更高级的对象，我之前搜animation几乎没看到相关的内容，单独搜ArtistAnimation才看到一两篇CSDN的博文和官方文档，但是…一言难尽，写的什么玩意儿嘛。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">gray_video = list()</div><div class="line">for i in range(len(gray_frames)):</div><div class="line">    cur_frame = video.imshow(gray_frames[i], cmap=&apos;gray&apos;, animated=True)</div><div class="line">    curve = err_curve.plot(err_list[0:i+1], color=&apos;blue&apos;, animated=True)</div><div class="line">    curve = curve[0]</div><div class="line">    gray_video.append([cur_frame, curve])</div><div class="line"></div><div class="line">anim = animation.ArtistAnimation(fig, gray_video,interval=int(1000/fps), blit=True)</div></pre></td></tr></table></figure>
+<p>首先定义用于存储每一帧动画图像的列表gray_video。</p>
+<p>这里需要提前解释一下，显示图片通常使用imshow(),显示曲线时用plot(),两者的返回值是区别的，imshow()返回的是AxesImage类对象，plot()返回的是一个列表：第一项是一个Line2D类的对象，第二项是其中Artist子类的个数（我暂时只能根据内部变量的名称猜测，我看到的列表第二项是<strong>len</strong>=1）。</p>
+<p>回到ArtistAnimation，我们需要把Artist的子类对象一个一个添加到那个列表中，作为每一帧的图像。如果需要放在两个子图中显示，那么添加的时候用逗号连接。也就是我的代码中把每一帧的视频图像和曲线图像取出来，添加到列表中。</p>
+<p>这里比较坑的地方就是，添加图片的时候用imshow就可以返回Artist的子类对象了，但是绘制曲线如果习惯性的直接用plot()会报错，这里又不是很好debug，报错的时候甚至都不会告诉你是哪一行出错了。因为plot()返回的是列表，需要再手动提出其中的Line2D对象才可以和AxesImage类对象(由imshow返回)一起被动画使用。<br>添加完每一帧的图像，再调用ArtistAnimation，用matplotlib.pyplot.show()就可以播放动画啦。</p>
+<p>之后需要的话再用save()存下来即可。</p>
+<p><small><br>小声逼逼<br>其实我感觉我讲的也乱七八糟，但是大概应该是说清楚了吧。可能讲的太琐碎太细节了。<br>其实我也就昨天下午才开始接触matplotlib，里面imshow的用法和matlab还是不太一样的，matlab会直接显示图片，但是matplotlib会返回一个类对象，还需要再调用专门的显示函数。<br>这么大个库我也就用了很基本的一些功能，突然说要做动画我也是懵逼的，而且还死活找不到资料，又不知道能问谁。还好zx给了一份代码，虽然也还是不太符合我的需求，但是提供了一些思路，后面我又自己探索尝试了一下，终于做出这个破图了。我太讨厌图像了啊啊啊啊。<br></small></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/03/summery1/" rel="next" title="标日初级上册语法整理">
+                <i class="fa fa-chevron-left"></i> 标日初级上册语法整理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <p class="site-author-name" itemprop="name">LavieXu</p>
+            <p class="site-description motion-element" itemprop="description">please don't tell anyone else</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">Tags</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LavieXu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a></div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
